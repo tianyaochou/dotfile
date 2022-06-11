@@ -146,14 +146,14 @@
           imports = [ (digga.lib.importHosts ./hosts/darwin) ];
           hosts = {
             /* set host-specific properties here */
-            Mac = { };
+            Tianyaos-MBP = { };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.darwin users.darwin ];
+              base = [ core.darwin users.tianyaochou ];
             };
           };
         };
