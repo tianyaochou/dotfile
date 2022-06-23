@@ -1,8 +1,9 @@
-{ config, pkgs, suites, ... }:
+{ config, pkgs, suites, profiles, ... }:
 
 {
-  imports = with suites;
-    base;
+  imports = suites.base ++
+            (with profiles;
+              [ users.tianyaochou ]);
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -14,10 +15,14 @@
       ffmpeg
       gh
       opam
+      python310
+      python310Packages.pygments
       pandoc
       haskellPackages.pandoc-crossref
       rustup
       texlive.combined.scheme-full
+      fontconfig
+      fira-code
     ];
 
   # Use a custom configuration.nix location.
@@ -27,13 +32,6 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;
-  nix.extraOptions = ''
-    extra-experimental-features = nix-command flakes
-  '';
-  nix.trustedBinaryCaches = [
-    "https://nrdxp.cachix.org"
-    "https://nix-community.cachix.org"
-  ];
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true;  # default shell on catalina
@@ -49,6 +47,7 @@
   homebrew.brews = [ "antigen"
                      "lux"
                      "ghcup"
+                     "gmp"
                    ];
   homebrew.casks = [
     "appcleaner"
@@ -65,6 +64,8 @@
     "zoom"
     "zotero"
     "motrix"
+
+    "blackhole-16ch"
 
     "logseq"
     "clashx"

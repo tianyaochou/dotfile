@@ -16,7 +16,7 @@
       # But, perhaps even more usefully, it provides a place for adding
       # darwin-specific overlays and packages which could otherwise cause build
       # failures on Linux systems.
-      nixpkgs-darwin-stable.url = "github:NixOS/nixpkgs/nixpkgs-21.11-darwin";
+      nixpkgs-darwin-stable.url = "github:NixOS/nixpkgs/nixpkgs-22.05-darwin";
 
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
@@ -118,7 +118,7 @@
           imports = [ (digga.lib.importHosts ./hosts/nixos) ];
           hosts = {
             /* set host-specific properties here */
-            NixOS = { };
+            terraria = { };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
@@ -126,6 +126,7 @@
             };
             suites = with profiles; rec {
               base = [ core.nixos users.nixos users.root ];
+              server = base ++ [server];
             };
           };
         };
@@ -153,7 +154,7 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.darwin users.tianyaochou ];
+              base = [ core.darwin ];
             };
           };
         };

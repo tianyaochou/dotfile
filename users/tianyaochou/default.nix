@@ -1,4 +1,4 @@
-{ hmUsers, ... }:
+{ pkgs, hmUsers, ... }:
 
 {
 
