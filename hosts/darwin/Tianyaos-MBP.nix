@@ -2,8 +2,8 @@
 
 {
   imports = suites.base ++
-            (with profiles;
-              [ users.tianyaochou ]);
+    (with profiles;
+    [ users.tianyaochou ]);
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -34,7 +34,7 @@
   nix.package = pkgs.nix;
 
   # Create /etc/bashrc that loads the nix-darwin environment.
-  programs.zsh.enable = true;  # default shell on catalina
+  programs.zsh.enable = true; # default shell on catalina
   programs.zsh.promptInit = "";
   # programs.fish.enable = true;
 
@@ -44,11 +44,13 @@
   # Homebrew
   homebrew.enable = true;
   homebrew.cleanup = "uninstall";
-  homebrew.brews = [ "antigen"
-                     "lux"
-                     "ghcup"
-                     "gmp"
-                   ];
+  homebrew.taps = [ "homebrew/cask" "homebrew/cask-drivers" ];
+  homebrew.brews = [
+    "antigen"
+    "lux"
+    "ghcup"
+    "gmp"
+  ];
   homebrew.casks = [
     "appcleaner"
     "blockblock"

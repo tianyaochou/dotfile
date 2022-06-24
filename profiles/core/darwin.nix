@@ -21,7 +21,7 @@
     darwinConfig = "${self}/lib/compat";
 
     shellAliases = {
-      nrb = "sudo darwin-rebuild switch --flake";
+      nrb = "darwin-rebuild switch --flake";
     };
 
   };

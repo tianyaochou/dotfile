@@ -33,11 +33,11 @@
           url = "https://github.com/tianyaochou.keys";
           sha256 = "87e310064922f509efff3bd298159a4d86480534d2d6e649405b068cad012e93";
         };
-        in [keyFilePath];
+        in [ keyFilePath ];
     };
   };
   users.users.terraria.group = "terraria";
-  users.groups.terraria = {};
+  users.groups.terraria = { };
 
   programs.tmux.enable = true;
 

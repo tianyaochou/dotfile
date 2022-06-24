@@ -200,6 +200,8 @@
 
         deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
 
-      }
+
+
+      } // (digga.lib.eachSystem digga.lib.defaultSystems (system: { formatter = nixpkgs.legacyPackages.${system}.nixpkgs-fmt; }))
   ;
 }
