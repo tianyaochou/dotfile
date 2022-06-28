@@ -119,6 +119,7 @@
           hosts = {
             /* set host-specific properties here */
             terraria = { };
+	    virtual = { };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
