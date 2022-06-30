@@ -21,6 +21,7 @@
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
+      digga.inputs.darwin.follows = "darwin";
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
 
@@ -31,13 +32,13 @@
       home.url = "github:nix-community/home-manager/release-21.11";
       home.inputs.nixpkgs.follows = "nixos";
 
-      darwin.url = "github:LnL7/nix-darwin";
+      darwin.url = "github:tianyaochou/nix-darwin/fix-alias-shell-escape";
       darwin.inputs.nixpkgs.follows = "nixpkgs-darwin-stable";
 
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
 
-      agenix.url = "github:ryantm/agenix";
+      agenix.url = "github:montchr/agenix/darwin-support";
       agenix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
@@ -49,6 +50,8 @@
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
       nixos-generators.url = "github:nix-community/nixos-generators";
+
+      nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
     };
 
   outputs =
@@ -63,6 +66,7 @@
     , nvfetcher
     , deploy
     , nixpkgs
+    , nix-doom-emacs
     , ...
     } @ inputs:
     digga.lib.mkFlake
@@ -119,15 +123,16 @@
           hosts = {
             /* set host-specific properties here */
             terraria = { };
-	    virtual = { };
+	          virtual = { };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.nixos users.nixos users.root ];
+              base = [ core.nixos utils users.root ];
               server = base ++ [ profiles.sshd ];
+              virtual = base ++ [ users.tianyaochou ];
             };
           };
         };
@@ -155,7 +160,8 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              base = [ core.darwin ];
+              base = [ core.darwin utils ];
+              mbp = base ++ [ users.tianyaochou ];
             };
           };
         };
@@ -166,7 +172,7 @@
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = with profiles; rec {
-              base = [ direnv git ];
+              base = [ direnv git shell vscode ];
             };
           };
           users = {
@@ -185,8 +191,7 @@
             # it could just be left to the developer to determine what's
             # appropriate. after all, configuring these hm users is one of the
             # first steps in customizing the template.
-            nixos = { suites, ... }: { imports = suites.base; };
-            darwin = { suites, ... }: { imports = suites.base; };
+            tianyaochou = { };
           }; # digga.lib.importers.rakeLeaves ./users/hm;
         };
 

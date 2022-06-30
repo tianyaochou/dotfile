@@ -4,7 +4,14 @@
 
     extraConfig = {
       pull.rebase = false;
+      pull.ff = "only";
     };
+
+    ignores = [
+      "build"
+      ".vscode"
+      ".DS_Store"
+    ];
 
     aliases = {
       a = "add -p";
@@ -13,6 +20,7 @@
       f = "fetch -p";
       c = "commit";
       p = "push";
+      pf = "push --force-with-lease";
       ba = "branch -a";
       bd = "branch -d";
       bD = "branch -D";

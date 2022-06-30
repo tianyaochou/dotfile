@@ -1,48 +1,21 @@
 { config, pkgs, suites, profiles, ... }:
 
 {
-  imports = suites.base ++
-    (with profiles;
-    [ users.tianyaochou ]);
+  imports = suites.mbp;
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs;
-    [
-      agenix
-      ripgrep
-      emacsMacport
-      entr
-      ffmpeg
-      gh
-      opam
-      python310
-      python310Packages.pygments
-      pandoc
-      haskellPackages.pandoc-crossref
-      rustup
-      texlive.combined.scheme-full
-      fontconfig
-      fira-code
-    ];
-
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
-  # environment.darwinConfig = "$HOME/.config/nixpkgs/darwin/configuration.nix";
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  nix.package = pkgs.nix;
-
-  # Create /etc/bashrc that loads the nix-darwin environment.
-  programs.zsh.enable = true; # default shell on catalina
-  programs.zsh.promptInit = "";
-  # programs.fish.enable = true;
+  environment.systemPackages = with pkgs; [
+    emacs
+  ];
 
   services.emacs.enable = true;
-  services.emacs.package = pkgs.emacsMacport;
+
+  programs.fish.enable = true;
+  environment.shells = with pkgs; [ fish ];
 
   # Homebrew
+  # disable homebrew install when activating FIXME: does not work
+  # system.activationScripts.homebrew.enable = false;
+  homebrew.global.brewfile = true;
   homebrew.enable = true;
   homebrew.cleanup = "uninstall";
   homebrew.taps = [ "homebrew/cask" "homebrew/cask-drivers" ];
@@ -61,7 +34,6 @@
     "obsidian"
     "pdf-expert"
     "racket"
-    "visual-studio-code"
     "vmware-fusion"
     "yesplaymusic"
     "zoom"
@@ -87,16 +59,17 @@
     "texmacs"
   ];
 
-  homebrew.masApps = {
-    "1Password 7" = 1333542190;
-    Keynote = 409183694;
-    Numbers = 409203825;
-    Pages = 409201541;
-    "Pixelmator Pro" = 1289583905;
-    RunCat = 1429033973;
-    StopTheMadness = 1376402589;
-    OneDrive = 823766827;
-  };
+  # HACK: This is sloooooooooooowwwww
+  # homebrew.masApps = {
+  #   "1Password 7" = 1333542190;
+  #   Keynote = 409183694;
+  #   Numbers = 409203825;
+  #   Pages = 409201541;
+  #   "Pixelmator Pro" = 1289583905;
+  #   RunCat = 1429033973;
+  #   StopTheMadness = 1376402589;
+  #   OneDrive = 823766827;
+  # };
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

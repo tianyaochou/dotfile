@@ -1,10 +1,6 @@
 { config, lib, pkgs, self, ... }:
 
 {
-  imports = [
-    ./common.nix
-  ];
-
   # This is just a representation of the nix default
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
@@ -40,27 +36,11 @@
       };
   };
 
-  fonts.fontconfig.defaultFonts = {
-    monospace = [ "DejaVu Sans Mono for Powerline" ];
-    sansSerif = [ "DejaVu Sans" ];
-  };
-
   nix = {
     # Improve nix store disk usage
     autoOptimiseStore = true;
     optimise.automatic = true;
     allowedUsers = [ "@wheel" ];
-  };
-
-  programs.bash = {
-    # Enable starship
-    promptInit = ''
-      eval "$(${pkgs.starship}/bin/starship init bash)"
-    '';
-    # Enable direnv, a tool for managing shell environments
-    interactiveShellInit = ''
-      eval "$(${pkgs.direnv}/bin/direnv hook bash)"
-    '';
   };
 
   # For rage encryption, all hosts need a ssh key pair

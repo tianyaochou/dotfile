@@ -7,7 +7,6 @@ in
 
 {
   # Sets nrdxp.cachix.org binary cache which just speeds up some builds
-  imports = [ ../cachix ];
 
   environment = {
 
@@ -32,16 +31,8 @@ in
       skim
       tealdeer
       whois
+      neofetch
     ];
-
-    # Starship is a fast and featureful shell prompt
-    # starship.toml has sane defaults that can be changed there
-    shellInit = ''
-      export STARSHIP_CONFIG=${
-        pkgs.writeText "starship.toml"
-        (fileContents ./starship.toml)
-      }
-    '';
 
     shellAliases =
       let
@@ -74,12 +65,12 @@ in
         nr = "np remove";
         ns = "n search --no-update-lock-file";
         nf = "n flake";
+        # FIXME: problem with nix-darwin
         nepl = "n repl '<nixpkgs>'";
         srch = "ns nixos";
         orch = "ns override";
-        mn = ''
-          manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix
-        '';
+        # FIXME: Something wrong with nix-darwin, which doesn't escape shell
+        mn = ''manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | sk --preview="manix '{}'" | xargs manix'';
         top = "btm";
 
         # sudo
@@ -88,29 +79,6 @@ in
         se = ifSudo "sudoedit";
 
       };
-  };
-
-  fonts.fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
-
-  nix = {
-
-    # Improve nix store disk usage
-    gc.automatic = true;
-
-    # Prevents impurities in builds
-    useSandbox = true;
-
-    # Give root user and wheel group special Nix privileges.
-    trustedUsers = [ "root" "@wheel" ];
-
-    # Generally useful nix option defaults
-    extraOptions = ''
-      min-free = 536870912
-      keep-outputs = true
-      keep-derivations = true
-      fallback = true
-    '';
-
   };
 
 }
